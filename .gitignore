@@ -116,7 +116,13 @@ ipython_config.py
 #pdm.toml
 .pdm-python
 .pdm-build/
+# Ignorar el entorno virtual (NUNCA se sube)
+venv/
+env/
+.venv/
 
+# Ignorar archivos de configuración personal/llaves
+.env
 # pixi
 #   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
 #pixi.lock
