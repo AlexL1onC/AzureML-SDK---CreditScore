@@ -1,2 +1,2 @@
-pandas
-pyodbc
+pandas #for data manipulation and analysis
+pyodbc #for connecting to SQL databases
