@@ -1,6 +1,6 @@
-from database import SQLDataHandler
-from model import ModelManager
-from deployment import AzureDeployer
+from src.database import SQLDataHandler
+from src.model import ModelManager
+from src.deployment import AzureDeployer
 import json
 
 if __name__ == "__main__":
