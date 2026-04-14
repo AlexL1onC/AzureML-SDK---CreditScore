@@ -3,28 +3,41 @@ import joblib
 import pandas as pd
 import os
 from azureml.core.model import Model
+from src.zorrouno import processor
 
 def init():
     global model
-    # Buscamos el modelo registrado en Azure
+    global threshold
     model_path = Model.get_model_path('modelo_vervena') 
     model = joblib.load(model_path)
+    
+    # Leer umbral si existe el archivo, de lo contrario usar el estipulado
+    threshold_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'umbral.json')
+    if os.path.exists(threshold_path):
+        with open(threshold_path, 'r') as f:
+            threshold = float(json.load(f).get('threshold', 0.7285))
+    else:
+        threshold = 0.7285
 
 def run(raw_data):
     try:
-        # 1. Recibir datos
-        data = json.loads(raw_data)['data'][0]
+        # Adaptado para poder recibir múltiples registros
+        data = json.loads(raw_data)['data']
         df = pd.DataFrame(data)
         
-        # 2. Limpieza (Igual a la del entrenamiento)
-        # Asegúrate que estas columnas coincidan con lo que discutimos
-        cols_to_drop = ["RowNumber", "CustomerId", "Surname"]
-        df_clean = df.drop(columns=[c for c in cols_to_drop if c in df.columns])
+        # 1. Transformación usando la clase solicitada
+        df_clean = processor.embbed(df)
         
-        # 3. Predicción
-        # Aquí podrías necesitar aplicar dummies si no se hizo antes
-        prediction = model.predict(df_clean)
+        # 2. Extracción de la probabilidad (no se aplica sigmoide extra a esto)
+        # predict_proba retorna probabilidades [P(clase=0), P(clase=1)]
+        probabilities = model.predict_proba(df_clean)[:, 1]
         
-        return json.dumps(prediction.tolist())
+        # 3. Clasificación basada en el umbral
+        predictions = (probabilities >= threshold).astype(int)
+        
+        return json.dumps({
+            "predictions": predictions.tolist(),
+            "probabilities": probabilities.tolist()
+        })
     except Exception as e:
         return json.dumps({"error": str(e)})

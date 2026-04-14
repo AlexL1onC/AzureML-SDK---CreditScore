@@ -1,5 +1,5 @@
 from src.database import SQLDataHandler
-from src.model import ModelManager
+from src.model import XGBoostModel
 from src.deployment import AzureDeployer
 import json
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     datos = db.get_table_data("SalesLT.Customer") # Cambia por tu tabla
 
     # 3. Entrenar
-    manager = ModelManager()
+    manager = XGBoostModel()
     acc = manager.train(datos, target_col="Exited") # Cambia por tu variable cualitativa
     manager.save_model("model.pkl")
     print(f"Modelo entrenado con precisión de: {acc}")
