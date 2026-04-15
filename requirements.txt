@@ -1,8 +1,8 @@
 # Core ML (Tus versiones originales)
-xgboost==2.0.3
-scikit-learn==1.4.2
-pandas==2.2.2
-numpy==1.26.4
+xgboost==2.1.4
+scikit-learn==1.6.1
+pandas==3.0.2
+numpy==2.2.4
 
 # Conexión a Base de Datos
 pyodbc
