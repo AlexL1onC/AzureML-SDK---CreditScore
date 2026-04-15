@@ -1,9 +1,6 @@
 {
-    "server": "tu-servidor.database.windows.net",
-    "db": "base de datos",
-    "user": "User sql",
-    "pwd": "Password",
-    "sub_id": "00000000-0000-0000-0000-000000000000",
-    "rg": "Resource Group",
-    "ws_name": "Nombre azure ml workspace"
+    "server": "servidorbasededatos1.database.windows.net",
+    "database": "basededatos1",
+    "username": "Pedro",
+    "password": "EsGrundy7$"
 }

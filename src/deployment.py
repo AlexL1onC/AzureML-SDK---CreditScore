@@ -2,6 +2,7 @@ from azureml.core import Workspace, Environment, Model
 from azureml.core.model import InferenceConfig
 from azureml.core.webservice import AciWebservice
 from azureml.core.conda_dependencies import CondaDependencies
+from src.zorrouno import processor
 
 class AzureDeployer:
     def __init__(self, subscription_id, resource_group, workspace_name):
@@ -25,7 +26,7 @@ class AzureDeployer:
             source_directory=".", 
             environment=env
         )
-        aci_config = AciWebservice.deploy_configuration(cpu_cores=1, memory_gb=1)
+        aci_config = AciWebservice.deploy_configuration(cpu_cores=0.5, memory_gb=0.5)
         
         service = Model.deploy(workspace=self.ws, name="api-service", 
                                models=[model], inference_config=inf_config, 
