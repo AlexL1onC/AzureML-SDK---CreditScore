@@ -6,7 +6,7 @@ import pandas as pd
 class SQLDataHandler:
     def __init__(self, config_file="config.json"):
         """Inicializa la clase cargando la configuracion"""
-        self.ruta_config = os.path.join(os.path.dirname(__file__), "config_file")
+        self.ruta_config = config_file
         self.config = self._load_config()
         self.conn = None
 
@@ -18,18 +18,20 @@ class SQLDataHandler:
     
     def connect(self):
         """Establece la conexion con Azure SQL"""
+        server = self.config['server']
+        username = self.config['username']
         conn_str = (
-            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER={self.config['server']};"
+            f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+            f"SERVER={server};"
             f"DATABASE={self.config['database']};"
-            f"UID={self.config['username']};"
+            f"UID={username}@{server.split('.')[0]};"
             f"PWD={self.config['password']};"
             f"Encrypt=yes;"
             f"TrustServerCertificate=no;"
-            f"Connection Timeout=30;"
+            f"Connection Timeout=90;"
         )
         try:
-            self.conn = pyodbc.connect(conn_str)
+            self.conn = pyodbc.connect(conn_str, timeout=90)
             print("Connected to the Azure SQL Database successfully!")
         except pyodbc.Error as e:
             print(f"Error connecting to the database: {e}")  
