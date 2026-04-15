@@ -1,6 +1,9 @@
 {
-    "server": "servidorbasededatos1.database.windows.net",
+    "server": "MODIFICAR",
     "database": "basededatos1",
     "username": "Pedro",
-    "password": "EsGrundy7$"
+    "password": "MODIFICAR",
+    "sub_id": "TU_SUBSCRIPTION_ID_AQUÍ",
+    "rg": "TU_RESOURCE_GROUP_AQUÍ",
+    "ws_name": "TU_WORKSPACE_NAME_AQUÍ"
 }
