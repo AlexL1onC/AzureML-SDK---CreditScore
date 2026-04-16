@@ -1,2 +1,2 @@
-# AzureML-SDK---CreditScore
+# AzureML-SDK---OrderQty
 Pruebas para AzureML y SQL
