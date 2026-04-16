@@ -21,7 +21,7 @@ class SQLDataHandler:
         server = self.config['server']
         username = self.config['username']
         conn_str = (
-            f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
             f"SERVER={server};"
             f"DATABASE={self.config['database']};"
             f"UID={username}@{server.split('.')[0]};"

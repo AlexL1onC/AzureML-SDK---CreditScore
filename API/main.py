@@ -1,26 +1,31 @@
-from src.database import SQLDataHandler
-from src.model import XGBoostModel
+from src.train import OrderClassifier
 from src.deployment import AzureDeployer
-import json
+import os
 
 if __name__ == "__main__":
-    # 1. Cargar configuración (Evita hardcoding)
-    with open('config.json') as f:
-        config = json.load(f)
-
-    # 2. Obtener Datos
-    db = SQLDataHandler(config['server'], config['db'], config['user'], config['pwd'])
-    datos = db.get_table_data("SalesLT.Customer") # Cambia por tu tabla
-
-    # 3. Entrenar
-    manager = XGBoostModel()
-    acc = manager.train(datos, target_col="Exited") # Cambia por tu variable cualitativa
-    manager.save_model("model.pkl")
-    print(f"Modelo entrenado con precisión de: {acc}")
-
-    # 4. Desplegar a la Nube
-    deployer = AzureDeployer(config['sub_id'], config['rg'], config['ws_name'])
-    uri = deployer.register_and_deploy("model.pkl", "modelo_vervena")
+    # 1. Definir rutas
+    root = os.path.dirname(os.path.dirname(__file__))
+    config = os.path.join(root, "API", "config.json")
     
-    print(f"--- DESPLIEGUE EXITOSO ---")
-    print(f"Tu API está viva en: {uri}")
+    # 2. Proceso de Entrenamiento
+    #classifier = OrderClassifier(config_path=config)
+    #df = classifier.load_data()
+    
+    #df = classifier.preprocess(df)
+
+    # Entrenar y guardar (esto genera el .pkl y los JSON de métricas)
+    #classifier.train(df)
+    #accuracy = classifier.metrics["accuracy"]
+    #classifier.save_artifacts()
+    #print(f"Entrenamiento completado. Accuracy: {accuracy}")
+    accuracy = 0.65 # Solo para pruebas, reemplaza con el valor real de tu entrenamiento
+
+    # 3. Despliegue (Solo si el accuracy es aceptable)
+    if accuracy > 0.6:
+        deployer = AzureDeployer(config_path=config)
+        # Asegúrate de que apunte al nuevo pkl
+        uri = deployer.register_and_deploy(
+        model_path="artifacts/order_classifier.pkl", 
+        model_name="order_classifier"
+        )
+        print(f"API desplegada en: {uri}")

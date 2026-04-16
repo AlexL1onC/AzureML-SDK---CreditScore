@@ -2,42 +2,49 @@ import json
 import joblib
 import pandas as pd
 import os
+import numpy as np
 from azureml.core.model import Model
-from src.zorrouno import processor
 
 def init():
     global model
-    global threshold
-    model_path = Model.get_model_path('modelo_vervena') 
+    # El nombre debe coincidir con el que registres en deployment.py
+    model_path = Model.get_model_path('order_classifier') 
     model = joblib.load(model_path)
-    
-    # Leer umbral si existe el archivo, de lo contrario usar el estipulado
-    threshold_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'umbral.json')
-    if os.path.exists(threshold_path):
-        with open(threshold_path, 'r') as f:
-            threshold = float(json.load(f).get('threshold', 0.7285))
-    else:
-        threshold = 0.7285
 
 def run(raw_data):
     try:
-        # Adaptado para poder recibir múltiples registros
         data = json.loads(raw_data)['data']
         df = pd.DataFrame(data)
         
-        # 1. Transformación usando la clase solicitada
-        df_clean = processor.embbed(df)
+        # 1. Replicar Ingeniería de Variables de train.py
+        df['OrderDate'] = pd.to_datetime(df['OrderDate'])
+        df["day_of_week"]  = df["OrderDate"].dt.dayofweek
+        df["month"]        = df["OrderDate"].dt.month
+        df["year"]         = df["OrderDate"].dt.year
+        df["day_of_month"] = df["OrderDate"].dt.day
+        df["is_weekend"]   = df["day_of_week"].isin([5, 6]).astype(int)
         
-        # 2. Extracción de la probabilidad (no se aplica sigmoide extra a esto)
-        # predict_proba retorna probabilidades [P(clase=0), P(clase=1)]
-        probabilities = model.predict_proba(df_clean)[:, 1]
+        # Mapeo manual de ShipMethod (debe ser igual al de entrenamiento)
+        # Si usaste LabelEncoder, lo ideal sería cargarlo aquí también
+        ship_method_map = {'Cargo Transport 1': 0, 'Express Logistics': 1, 'Standard Post': 2}
+        df['ship_method_encoded'] = df['ShipMethod'].map(ship_method_map).fillna(-1)
+
+        # 2. Seleccionar solo las columnas que el modelo conoce
+        FEATURE_COLS = [
+            "UnitPriceDiscount", "LineTotal", "ProductCategoryID", "UnitPrice",
+            "day_of_week", "month", "year", "day_of_month", "is_weekend", "ship_method_encoded"
+        ]
         
-        # 3. Clasificación basada en el umbral
-        predictions = (probabilities >= threshold).astype(int)
+        # 3. Predicción de Cuartil (0, 1, 2, 3)
+        predictions = model.predict(df[FEATURE_COLS])
+        
+        # Mapeo de labels para que la respuesta sea cualitativa
+        labels = {0: "Volumen Muy Bajo", 1: "Volumen Bajo", 2: "Volumen Medio", 3: "Volumen Alto"}
+        result = [labels.get(p, "Desconocido") for p in predictions]
         
         return json.dumps({
             "predictions": predictions.tolist(),
-            "probabilities": probabilities.tolist()
+            "labels": result
         })
     except Exception as e:
         return json.dumps({"error": str(e)})

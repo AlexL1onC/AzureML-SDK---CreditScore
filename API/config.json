@@ -2,5 +2,8 @@
     "server": "servidorbasededatos1.database.windows.net",
     "database": "basededatos1",
     "username": "Pedro",
-    "password": "EsGrundy7$"
+    "password": "EsGrundy7$",
+    "subscription_id": "c4e22fdc-2f99-42b6-a848-3c02672ae706", 
+    "resource_group": "API_Classifier_Practice",
+    "workspace_name": "Classifier_FJ2026"
 }

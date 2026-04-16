@@ -1,14 +1,14 @@
 {
     "metrics": {
-        "rmse": 0.5156587531862025,
-        "mae": 0.210221529006958,
-        "r2": 0.9688010811805725
+        "accuracy": 0.926605504587156,
+        "train_rows": 433,
+        "test_rows": 109
     },
     "best_params": {
         "colsample_bytree": 1.0,
         "learning_rate": 0.2,
-        "max_depth": 5,
-        "n_estimators": 300,
-        "subsample": 0.8
+        "max_depth": 3,
+        "n_estimators": 200,
+        "subsample": 1.0
     }
 }
