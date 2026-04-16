@@ -36,7 +36,7 @@ class AzureDeployer:
         
         aci_config = AciWebservice.deploy_configuration(cpu_cores=1, memory_gb=1)
         
-        service = Model.deploy(workspace=self.ws, name="order-service", 
+        service = Model.deploy(workspace=self.ws, name="order-service-final-v01", 
                                models=[model], inference_config=inf_config, 
                                deployment_config=aci_config, overwrite=True)
         

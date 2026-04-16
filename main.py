@@ -4,7 +4,7 @@ import os
 
 if __name__ == "__main__":
     # 1. Definir rutas
-    root = os.path.dirname(os.path.dirname(__file__))
+    root = os.path.dirname(os.path.abspath(__file__))
     config = os.path.join(root, "API", "config.json")
     
     # 2. Proceso de Entrenamiento
