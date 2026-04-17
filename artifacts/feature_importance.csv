@@ -1,0 +1,11 @@
+feature,importance
+UnitPriceDiscount,0.34627134
+ProductCategoryID,0.23667789
+UnitPrice,0.22120431
+LineTotal,0.19584645
+day_of_week,0.0
+month,0.0
+year,0.0
+day_of_month,0.0
+is_weekend,0.0
+ship_method_encoded,0.0

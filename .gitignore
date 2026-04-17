@@ -160,6 +160,8 @@ venv.bak/
 # mkdocs documentation
 /site
 
+API/config.json
+
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -211,3 +213,4 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+config.json
