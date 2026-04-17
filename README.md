@@ -123,7 +123,7 @@ Coordina la ejecución del sistema:
 if __name__ == "__main__":
 ```
 
-Este bloque define el punto de entrada del programa. Permite ejecutar el flujo principal únicamente cuando el archivo se ejecuta directamente, evitando que se ejecute automáticamente cuando es importado como módulo en otro script.
+Con respecto a la pregunta Bonus, este bloque define el punto de entrada del programa. Permite ejecutar el flujo principal únicamente cuando el archivo se ejecuta directamente, evitando que se ejecute automáticamente cuando es importado como módulo en otro script.
 
 En este proyecto, se utiliza para orquestar:
 
@@ -174,20 +174,9 @@ Este proyecto cumple con los requerimientos de la actividad:
 
 ---
 
-## 🧠 Nota técnica
+## 🧠 Predicción Cualitativa 
 
 La variable objetivo `OrderVolume` se construye a partir de la variable continua `OrderQty`, discretizándola en cuartiles. Esto permite transformar el problema en una clasificación multiclase balanceada.
-
----
-
-## ⚠️ Consideración profesional
-
-En entornos productivos, los artifacts no se almacenan en el repositorio, sino en servicios especializados como:
-
-* Model Registry de Azure ML
-* almacenamiento en la nube
-
-Esto permite versionamiento, trazabilidad y escalabilidad.
 
 ---
 
@@ -195,8 +184,14 @@ Esto permite versionamiento, trazabilidad y escalabilidad.
 
 Proyecto desarrollado para el módulo de **Cloud Computing**.
 
+**Equipo 1:**
+
 Pedro Soto Juárez - A00837560
+
 Alexei Carrillo Acosta - A01285424
+
 Mateo Zepeda Pérez - A01722398
+
 Luis Fernando Alcazar Díaz - A00836287
+
 Erick Isaac Lascano Otañez - A00836571
