@@ -157,6 +157,10 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+---
+## ⚠️ Requisitos
+
+Acceso activo a Azure SQL Database y recursos de Microsoft Azure correctamente configurados.
 
 ---
 
